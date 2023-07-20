@@ -4,42 +4,45 @@ import { gettingDataFromServer } from '../slice/tasksSlice';
 
 const Display = () => {
     let {tasksList}=useSelector((state)=>state.tasks);
+  
     let dispatch=useDispatch();
     let [nextval,setNextVal]=useState(0);
-    let [preval,setPreval]=useState(0);
-    useEffect(()=>{
-         let task=0
-        dispatch(gettingDataFromServer(task));
-    },[])
+    let [currentPage,setCurrentPage]=useState(0);
 
     useEffect(()=>{
+
+         let task=0;
         dispatch(gettingDataFromServer(nextval));
-     },[nextval])
+    },[nextval])
 
-    let nextpage=()=>{
-
+   console.log("Hello");
+   
+      let nextpage=()=>{
          setNextVal(nextval+5);
+         //dispatch(gettingDataFromServer(nextval));
+         setCurrentPage((prepage)=>prepage+5);
     }
     let previouspage=()=>{
-        setNextVal(nextval-5)
-        
+        if(currentPage>0){
+          setCurrentPage((prevpage)=>prevpage-5);
+        }
     }
+     let currentData = tasksList.slice(currentPage,currentPage+5);
   return (
     <div>
         {
-            tasksList.map((task,index)=>{
+            currentData.map((task,index)=>{
                 return(
                     <div>
                     <h1>{` ${task.id} ${task.title}`}</h1>
                     <h6>{task.body}</h6>
                     </div>
                    )
-              })
-        }
+           })}
 
       <button onClick={previouspage}>Previouspage</button>
       <button onClick={nextpage}>Nextpage</button>
-                    
+    
     </div>
   )
 }

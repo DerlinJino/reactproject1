@@ -35,7 +35,7 @@ let tasksSlice = createSlice({
                    state.isLoading=false;
                    state.error='';
                    console.log(action.payload);
-                   state.tasksList=action.payload;
+                   state.tasksList=[...state.tasksList,...action.payload];
                })
                .addCase(gettingDataFromServer.rejected,(state,action)=>{
                    state.error=action.payload.error;
